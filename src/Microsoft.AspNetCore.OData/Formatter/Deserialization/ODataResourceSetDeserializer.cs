@@ -202,7 +202,49 @@ namespace Microsoft.AspNetCore.OData.Formatter.Deserialization
                     Error.Format(SRResources.TypeCannotBeDeserialized, elementType.FullName()));
             }
 
-            return deserializer.ReadInline(resourceWrapper, elementType, readContext);
+            ODataDeserializerContext nestedReadContext = readContext.CloneWithoutType();
+            if (elementType == null || elementType.IsUntyped())
+            {
+                if (resourceWrapper.Resource.TypeName == null || resourceWrapper.Resource.TypeName == "Edm.Untyped")
+                {
+                    nestedReadContext.ResourceType = typeof(EdmUntypedObject);
+                }
+                else
+                {
+                    // We should use the given type name to read
+                    elementType = readContext.Model.ResolveResourceType(resourceWrapper.Resource);
+                }
+            }
+
+            if (nestedReadContext.ResourceType == null)
+            {
+                Type clrType = readContext.Model.GetClrType(elementType);
+                if (clrType == null)
+                {
+                    if (readContext.IsNoClrType)
+                    {
+                        if (elementType.IsEntity())
+                        {
+                            nestedReadContext.ResourceType = typeof(EdmEntityObject);
+                        }
+                        else
+                        {
+                            nestedReadContext.ResourceType = typeof(EdmComplexObject);
+                        }
+                    }
+                    else
+                    {
+                        throw new ODataException(
+                            Error.Format(SRResources.MappingDoesNotContainResourceType, elementType.FullName()));
+                    }
+                }
+                else
+                {
+                    nestedReadContext.ResourceType = clrType;
+                }
+            }
+
+            return deserializer.ReadInline(resourceWrapper, elementType, nestedReadContext);
         }
 
         /// <summary>
@@ -219,7 +261,7 @@ namespace Microsoft.AspNetCore.OData.Formatter.Deserialization
                 throw Error.ArgumentNull(nameof(resourceSetWrapper));
             }
 
-            IEdmCollectionTypeReference edmType = readContext.Model.ResolveResouceSetType(resourceSetWrapper.ResourceSet);
+            IEdmCollectionTypeReference edmType = readContext.Model.ResolveResourceSetType(resourceSetWrapper.ResourceSet);
 
             IODataEdmTypeDeserializer deserializer = DeserializerProvider.GetEdmTypeDeserializer(edmType);
             if (deserializer == null)

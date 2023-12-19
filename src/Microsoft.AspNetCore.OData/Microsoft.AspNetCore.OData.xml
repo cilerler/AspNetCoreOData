@@ -1102,6 +1102,20 @@
             <param name="clrType">The type to test.</param>
             <returns>True if the type is a DateTime; false otherwise.</returns>
         </member>
+        <member name="M:Microsoft.AspNetCore.OData.Common.TypeHelper.IsDateOnly(System.Type)">
+            <summary>
+            Determine if a type is a <see cref="T:System.DateOnly"/>.
+            </summary>
+            <param name="clrType">The type to test.</param>
+            <returns>True if the type is a DateOnly; false otherwise.</returns>
+        </member>
+        <member name="M:Microsoft.AspNetCore.OData.Common.TypeHelper.IsTimeOnly(System.Type)">
+            <summary>
+            Determine if a type is a <see cref="T:System.TimeOnly"/>.
+            </summary>
+            <param name="clrType">The type to test.</param>
+            <returns>True if the type is a TimeOnly; false otherwise.</returns>
+        </member>
         <member name="M:Microsoft.AspNetCore.OData.Common.TypeHelper.IsTimeSpan(System.Type)">
             <summary>
             Determine if a type is a TimeSpan.
@@ -4763,7 +4777,7 @@
             <summary>
             Checks whether a navigation link should be written or not. 
             </summary>
-            <param name="navigationLink">The navigation link to be written</param>
+            <param name="navigationLink">The navigation link to be written.</param>
             <param name="resourceContext">The resource context for the resource whose navigation link is being written.</param>
             <returns>true if navigation link should be written; otherwise false.</returns>
         </member>
@@ -11023,14 +11037,14 @@
             <param name="context">Serializer context</param>
             <returns>Returns the URI for NextPageLink. If a null object is passed for the instance, resorts to the default paging mechanism of using $skip and $top.</returns>
         </member>
-        <member name="M:Microsoft.AspNetCore.OData.Query.DefaultSkipTokenHandler.GenerateSkipTokenValue(System.Object,Microsoft.OData.Edm.IEdmModel,System.Collections.Generic.IList{Microsoft.AspNetCore.OData.Query.OrderByNode},System.TimeZoneInfo)">
+        <member name="M:Microsoft.AspNetCore.OData.Query.DefaultSkipTokenHandler.GenerateSkipTokenValue(System.Object,Microsoft.OData.Edm.IEdmModel,System.Collections.Generic.IList{Microsoft.AspNetCore.OData.Query.OrderByNode},Microsoft.AspNetCore.OData.Formatter.Serialization.ODataSerializerContext)">
             <summary>
             Generates a string to be used as the skip token value within the next link.
             </summary>
             <param name="lastMember"> Object based on which SkipToken value will be generated.</param>
             <param name="model">The edm model.</param>
             <param name="orderByNodes">List of orderByNodes used to generate the skiptoken value.</param>
-            <param name="timeZoneInfo">The timezone info.</param>
+            <param name="writeContext">The write context info.</param>
             <returns>Value for the skiptoken to be used in the next link.</returns>
         </member>
         <member name="M:Microsoft.AspNetCore.OData.Query.DefaultSkipTokenHandler.ApplyTo``1(System.Linq.IQueryable{``0},Microsoft.AspNetCore.OData.Query.SkipTokenQueryOption,Microsoft.AspNetCore.OData.Query.ODataQuerySettings,Microsoft.AspNetCore.OData.Query.ODataQueryOptions)">
@@ -15224,22 +15238,6 @@
             <summary>
             Initializes a new instance of the <see cref="T:Microsoft.AspNetCore.OData.Routing.Template.ValueSegmentTemplate" /> class.
             </summary>
-            <param name="segment">The value segment.</param>
-        </member>
-        <member name="P:Microsoft.AspNetCore.OData.Routing.Template.ValueSegmentTemplate.Segment">
-            <summary>
-            Gets the value segment.
-            </summary>
-        </member>
-        <member name="M:Microsoft.AspNetCore.OData.Routing.Template.ValueSegmentTemplate.GetTemplates(Microsoft.AspNetCore.OData.Routing.ODataRouteOptions)">
-            <inheritdoc />
-        </member>
-        <member name="M:Microsoft.AspNetCore.OData.Routing.Template.ValueSegmentTemplate.TryTranslate(Microsoft.AspNetCore.OData.Routing.Template.ODataTemplateTranslateContext)">
-            <inheritdoc />
-        </member>
-    </members>
-</doc>
-ummary>
             <param name="segment">The value segment.</param>
         </member>
         <member name="P:Microsoft.AspNetCore.OData.Routing.Template.ValueSegmentTemplate.Segment">
